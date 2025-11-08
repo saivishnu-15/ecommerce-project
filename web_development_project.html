@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple E-Commerce</title>
+
+<style>
+  body { 
+    font-family: Arial; 
+    background:#f3f3f3;
+  }
+
+  h1 { 
+    text-align:center; 
+    background:#0077cc; 
+    color:white; 
+    padding:15px;
+  }
+
+  nav {
+    background:black;
+    padding:10px;
+    text-align:center;
+  }
+
+  nav a {
+    margin:10px;
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
+  }
+
+  nav a:hover {
+    color:yellow;
+  }
+
+  section {
+    display:none;
+    margin:20px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+  }
+
+  input, textarea {
+    margin:5px 0;
+    padding:10px;
+    width:95%;
+  }
+
+  #searchBox {
+    border-radius:5px;
+    border:1px solid gray;
+  }
+
+  button {
+    padding:8px 12px;
+    background:#0077cc;
+    color:white;
+    border:none;
+    margin-left:5px;
+    cursor:pointer;
+    border-radius:5px;
+  }
+
+  button:hover {
+    background:#005999;
+  }
+
+  .product {
+    background:#e9e9e9;
+    padding:15px;
+    margin:10px 0;
+    border-radius:8px;
+  }
+
+  /* Bigger comment + report boxes */
+  #revText, #repText {
+    height:120px;
+  }
+</style>
+
+<script>
+function showPage(id){
+  let pages = document.getElementsByTagName("section");
+  for(let p of pages){ p.style.display="none"; }
+  document.getElementById(id).style.display="block";
+}
+
+/* Product data */
+let products = ["Phone", "Laptop", "Headphones", "Watch"];
+let orders=[];
+let wishlist=[];
+
+/* Search function */
+function searchProduct(){
+  let q = document.getElementById("searchBox").value.toLowerCase();
+  let list = document.getElementById("productList");
+  list.innerHTML="";
+
+  products.forEach(p=>{
+    if(p.toLowerCase().includes(q)){
+      let div=document.createElement("div");
+      div.className="product";
+      div.innerHTML = p +
+        " <button onclick=\"addOrder('" + p + "')\">Add Order</button>" +
+        " <button onclick=\"addWishlist('" + p + "')\">Add Wishlist</button>";
+      list.appendChild(div);
+    }
+  });
+
+  if(list.innerHTML==""){
+    list.innerHTML="<p>No products found</p>";
+  }
+}
+
+/* Add + Show */
+function addOrder(item){
+  orders.push(item);
+  showOrders();
+}
+function addWishlist(item){
+  wishlist.push(item);
+  showWishlist();
+}
+function showOrders(){
+  let o=document.getElementById("orderList");
+  o.innerHTML="";
+  orders.forEach(i=>{
+    let li=document.createElement("li");
+    li.textContent=i;
+    o.appendChild(li);
+  });
+}
+function showWishlist(){
+  let w=document.getElementById("wishList");
+  w.innerHTML="";
+  wishlist.forEach(i=>{
+    let li=document.createElement("li");
+    li.textContent=i;
+    w.appendChild(li);
+  });
+}
+
+/* Review */
+function addReview(){
+  let t=document.getElementById("revText").value;
+  if(t==""){ alert("Enter review"); return; }
+  let ul=document.getElementById("revList");
+  let li=document.createElement("li");
+  li.textContent=t;
+  ul.appendChild(li);
+  document.getElementById("revText").value="";
+}
+
+/* Report */
+function addReport(){
+  let t=document.getElementById("repText").value;
+  if(t==""){ alert("Enter report"); return; }
+  let ul=document.getElementById("repList");
+  let li=document.createElement("li");
+  li.textContent=t;
+  ul.appendChild(li);
+  document.getElementById("repText").value="";
+}
+
+/* Register */
+function checkReg(){
+  let n=document.getElementById("rname").value;
+  let e=document.getElementById("remail").value;
+  if(n=="" || e==""){ alert("Fill all fields"); return false; }
+  alert("Registered!");
+  return true;
+}
+
+/* Login */
+function checkLog(){
+  let e=document.getElementById("lemail").value;
+  if(e==""){ alert("Enter email"); return false; }
+  alert("Login success");
+  return true;
+}
+</script>
+
+</head>
+<body>
+
+<h1>Simple E-Commerce</h1>
+
+<!-- MENU -->
+<nav>
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('products'); searchProduct()">Products</a>
+  <a onclick="showPage('orders')">Orders</a>
+  <a onclick="showPage('wishlist')">Wishlist</a>
+  <a onclick="showPage('reviews')">Reviews</a>
+  <a onclick="showPage('care')">Customer Care</a>
+  <a onclick="showPage('report')">Report</a>
+  <a onclick="showPage('about')">About</a>
+  <a onclick="showPage('contact')">Contact</a>
+  <a onclick="showPage('reg')">Register</a>
+  <a onclick="showPage('log')">Login</a>
+</nav>
+
+<!-- HOME -->
+<section id="home" style="display:block;">
+  <h2>Home</h2>
+  <p>Welcome to our simple e-commerce store!</p>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <h2>Products</h2>
+  <input id="searchBox" onkeyup="searchProduct()" placeholder="Search product">
+  <div id="productList"></div>
+</section>
+
+<!-- ORDERS -->
+<section id="orders">
+  <h2>Orders</h2>
+  <ul id="orderList"></ul>
+</section>
+
+<!-- WISHLIST -->
+<section id="wishlist">
+  <h2>Wishlist</h2>
+  <ul id="wishList"></ul>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <h2>Comments & Reviews</h2>
+  <textarea id="revText" placeholder="Write your comment/review..."></textarea><br>
+  <button onclick="addReview()">Submit</button>
+  <ul id="revList"></ul>
+</section>
+
+<!-- CUSTOMER CARE -->
+<section id="care">
+  <h2>Customer Care</h2>
+  <p>Help line: 1800-111-222</p>
+</section>
+
+<!-- REPORT -->
+<section id="report">
+  <h2>Report an Issue</h2>
+  <textarea id="repText" placeholder="Describe your issue..."></textarea><br>
+  <button onclick="addReport()">Submit</button>
+  <ul id="repList"></ul>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Us</h2>
+  <p>Our E-Commerce application is designed to offer a smooth and convenient online shopping experience.
+We allow customers to easily browse products, save items to their wishlist, place orders, submit reviews, and report issues.
+We aim to deliver reliability, quality service, and customer satisfaction.</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: support@gmail.com</p>
+</section>
+
+<!-- REGISTER -->
+<section id="reg">
+  <h2>User Registration</h2>
+  <form onsubmit="return checkReg()">
+    <input id="rname" placeholder="Name"><br>
+    <input id="remail" placeholder="Email"><br>
+    <input id="rpassword" placeholder="Password"><br>
+    
+    <button>Register</button>
+  </form>
+</section>
+
+<!-- LOGIN -->
+<section id="log">
+  <h2>Login</h2>
+  <form onsubmit="return checkLog()">
+    <input id="lemail" placeholder="Email"><br>
+    <input id="lpassword" placeholder="Password"><br>
+    
+    <button>Login</button>
+  </form>
+</section>
+
+</body>
+</html>
+
+
+
+
+
